@@ -1,1 +1,10 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+/* Google Maps InfoWindow resets */
+.gm-style-iw {
+	padding: 0 !important;
+}
+
+.gm-style-iw-d {
+	overflow: auto !important;
+}
