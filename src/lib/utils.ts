@@ -2,6 +2,7 @@ import { init } from '@paralleldrive/cuid2';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import React from 'react';
+import { ContentWidget } from '@/types';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -40,4 +41,30 @@ export function mergeRefs<T>(
 			}
 		});
 	};
+}
+
+/**
+ * Fetches the HTML content from your Next.js app that will be rendered inside ChatGPT.
+ * This HTML includes all the patches needed to run Next.js in ChatGPT's triple-iframe architecture.
+ */
+export async function getAppsSdkCompatibleHtml(baseUrl: string, path: string) {
+	const result = await fetch(`${baseUrl}${path}`);
+	return await result.text();
+}
+
+/**
+ * Helper function to generate OpenAI-specific metadata that configures how ChatGPT
+ * interacts with your widget. This metadata:
+ * - Links tools to resources via outputTemplate
+ * - Defines loading states for better UX
+ * - Signals that this tool can render a widget
+ */
+export function widgetMeta(widget: ContentWidget) {
+	return {
+		'openai/outputTemplate': widget.templateUri, // Links to the registered resource URI
+		'openai/toolInvocation/invoking': widget.invoking, // Text shown during tool execution
+		'openai/toolInvocation/invoked': widget.invoked, // Text shown after tool completes
+		'openai/widgetAccessible': false, // Whether widget should be keyboard/screen reader accessible
+		'openai/resultCanProduceWidget': true // Signals this tool can render a widget
+	} as const;
 }

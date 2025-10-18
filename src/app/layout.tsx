@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Providers from '@/components/Providers';
+import NextChatSDKBootstrap from '@/NextChatSDKBookstrap';
+import { baseURL } from '@/baseUrl';
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -13,7 +15,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='en'>
+		<html
+			lang='en'
+			suppressHydrationWarning
+		>
+			<head>
+				<NextChatSDKBootstrap baseUrl={baseURL} />
+			</head>
 			<Providers>
 				<body>{children}</body>
 			</Providers>

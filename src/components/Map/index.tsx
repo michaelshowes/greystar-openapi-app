@@ -4,6 +4,12 @@ import { cn } from '@/lib/utils';
 import { Map as GoogleMap } from '@vis.gl/react-google-maps';
 import PropertyMarkers from './PropertyMarkers';
 import { Property } from '@/types';
+import {
+	useDisplayMode,
+	useMaxHeight,
+	useRequestDisplayMode,
+	useWidgetProps
+} from '@/hooks';
 
 interface MapProps {
 	properties: Property[];
@@ -25,6 +31,16 @@ export default function Map({
 	gestureHandling = 'greedy',
 	disableDefaultUI = true
 }: MapProps) {
+	const toolOutput = useWidgetProps<{
+		name?: string;
+		result?: { structuredContent?: { name?: string } };
+	}>();
+	const maxHeight = useMaxHeight() ?? undefined;
+	const displayMode = useDisplayMode();
+	const requestDisplayMode = useRequestDisplayMode();
+
+	const name = toolOutput?.result?.structuredContent?.name || toolOutput?.name;
+
 	return (
 		<GoogleMap
 			className={cn('w-screen h-screen', className)}
@@ -33,6 +49,10 @@ export default function Map({
 			gestureHandling={gestureHandling}
 			disableDefaultUI={disableDefaultUI}
 			mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID!}
+			style={{
+				maxHeight,
+				height: displayMode === 'fullscreen' ? maxHeight : undefined
+			}}
 		>
 			<PropertyMarkers properties={properties} />
 		</GoogleMap>
