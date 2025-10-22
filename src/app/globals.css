@@ -7,4 +7,5 @@
 
 .gm-style-iw-d {
 	overflow: auto !important;
+	max-height: unset !important;
 }

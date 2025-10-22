@@ -24,13 +24,13 @@ export type Point = google.maps.LatLngLiteral & {
 export type AdvancedMarkerProps =
 	google.maps.marker.AdvancedMarkerElement | null;
 
-export type ContentWidget = {
+export type Widget = {
 	id: string;
 	title: string;
-	templateUri: string; // URI that links tools to resources via openai/outputTemplate
-	invoking: string; // Text shown while the tool is executing
-	invoked: string; // Text shown after completion
-	html: string; // The actual HTML content to render
-	description: string; // Description of what the widget displays
-	widgetDomain: string; // Domain context for the widget
+	templateUri: string;
+	invoking: string;
+	invoked: string;
+	html: string;
+	description: string;
+	widgetDomain: string;
 };

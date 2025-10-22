@@ -34,7 +34,7 @@ export default function PropertyInfoWindow({
 							{formatPrice(property.startingLeasePrice)}
 						</span>
 					</p>
-					<p>Base rent from{formatPrice(property.baseRent)}</p>
+					<p>Base rent from {formatPrice(property.baseRent)}</p>
 				</div>
 			</div>
 		</InfoWindow>

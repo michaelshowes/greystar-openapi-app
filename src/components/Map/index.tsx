@@ -1,5 +1,6 @@
 'use client';
 
+// import { properties } from '@/app/api/properties/data';
 import { cn } from '@/lib/utils';
 import { Map as GoogleMap } from '@vis.gl/react-google-maps';
 import PropertyMarkers from './PropertyMarkers';
@@ -12,7 +13,6 @@ import {
 } from '@/hooks';
 
 interface MapProps {
-	properties: Property[];
 	className?: string;
 	defaultCenter?: {
 		lat: number;
@@ -24,37 +24,36 @@ interface MapProps {
 }
 
 export default function Map({
-	properties,
 	className,
 	defaultCenter = { lat: 38.899939, lng: -77.03585 },
 	defaultZoom = 12,
 	gestureHandling = 'greedy',
 	disableDefaultUI = true
 }: MapProps) {
-	const toolOutput = useWidgetProps<{
-		name?: string;
-		result?: { structuredContent?: { name?: string } };
-	}>();
-	const maxHeight = useMaxHeight() ?? undefined;
-	const displayMode = useDisplayMode();
-	const requestDisplayMode = useRequestDisplayMode();
+	const toolOutput = useWidgetProps<{ properties: Property[] }>();
+	const properties = toolOutput?.properties;
 
-	const name = toolOutput?.result?.structuredContent?.name || toolOutput?.name;
+	// console.log(properties);
 
 	return (
-		<GoogleMap
-			className={cn('w-screen h-screen', className)}
-			defaultCenter={defaultCenter}
-			defaultZoom={defaultZoom}
-			gestureHandling={gestureHandling}
-			disableDefaultUI={disableDefaultUI}
-			mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID!}
-			style={{
-				maxHeight,
-				height: displayMode === 'fullscreen' ? maxHeight : undefined
-			}}
-		>
-			<PropertyMarkers properties={properties} />
-		</GoogleMap>
+		<div className={'relative h-full'}>
+			<div
+				className={
+					'absolute top-10 left-4 bg-white p-4 z-10 rounded-xl shadow-lg border border-gray-200'
+				}
+			>
+				Property
+			</div>
+			<GoogleMap
+				className={cn('w-screen h-screen', className)}
+				defaultCenter={defaultCenter}
+				defaultZoom={defaultZoom}
+				gestureHandling={gestureHandling}
+				disableDefaultUI={disableDefaultUI}
+				mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID!}
+			>
+				{properties && <PropertyMarkers properties={properties} />}
+			</GoogleMap>
+		</div>
 	);
 }
